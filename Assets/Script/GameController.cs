@@ -9,11 +9,11 @@ public class GameController : MonoBehaviour {
     void Start () {
 		if(INSTANCE != null && INSTANCE != this)
         {
-            INSTANCE = this;
+			Destroy(this);
         }
         else
         {
-            Destroy(this);
+			INSTANCE = this;
         }
 	}
 	
