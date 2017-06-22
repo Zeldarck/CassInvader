@@ -4,33 +4,70 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
+	private static int _MIN_X = -12;
+	private static int _MAX_X = 12;
+	private static int _MIN_Y = 0;
+	private static int _MAX_Y = 19;
+
 	[SerializeField]
-	private float enemySpeed = 1;
+	private float _enemySpeed = 6;
 
 	private Rigidbody _enemyRB;
-	private BoxCollider _enemyCollider;
 
-	[SerializeField]
-	private Vector2 _direction;
+	private bool _descending;
+	private float _direction;
+	private Vector2 _lastBorderPosition;
+
 
 	// Use this for initialization
 	void Start () {
 		_enemyRB = gameObject.GetComponent<Rigidbody>();
-		_enemyCollider = gameObject.GetComponent<BoxCollider>();
 
-		_direction = new Vector2(1,0);
+		gameObject.transform.position = new Vector3(_MIN_X , _MAX_Y , 0);
+		_lastBorderPosition = new Vector2(_MIN_X, _MAX_Y);
+		_direction = 1;
+		_descending = false;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		// check position and determine where to go next
+		if (_descending) {
+			if (gameObject.transform.position.y <= (_lastBorderPosition.y - 1)) {
+				_lastBorderPosition.y -= 1;
+				Vector3 tmpPos = gameObject.transform.position;
+				tmpPos.y = _lastBorderPosition.y;
+				gameObject.transform.position = tmpPos;
+				_direction *= -1;
+				_descending = false;
+			}
+		} else {
+			if(gameObject.transform.position.x >= _MAX_X && _direction >= 0 ){
+				Vector3 tmpPos = gameObject.transform.position;
+				tmpPos.x = _MAX_X;
+				gameObject.transform.position = tmpPos;
+				_descending = true;
+			}
+			if(gameObject.transform.position.x <= _MIN_X && _direction <= 0 ){
+				Vector3 tmpPos = gameObject.transform.position;
+				tmpPos.x = _MIN_X;
+				gameObject.transform.position = tmpPos;
+				_descending = true;
+			}
+		}
+
+		// move accordingly
 		Vector3 directionToGo = new Vector3(0,0,0);
-		directionToGo.x = _direction.x * enemySpeed;
-		directionToGo.y = _direction.y * enemySpeed;
+		if (_descending) {
+			directionToGo.y = -1 * _enemySpeed;
+		} else {
+			directionToGo.x = _direction * _enemySpeed;
+		}
 
 		_enemyRB.velocity = directionToGo;
 	}
 
-	public void SetDirection(Vector2 dir){
+	public void SetDirection(float dir){
 		_direction = dir;
 	}
 
@@ -40,7 +77,4 @@ public class Enemy : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter(Collider other) {
-		Destroy(other.gameObject);
-	}
 }
