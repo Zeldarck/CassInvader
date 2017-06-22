@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ennemy : MonoBehaviour {
+public class Enemy : MonoBehaviour {
 
 	[SerializeField]
 	private float enemySpeed = 1;
 
 	private Rigidbody _enemyRB;
+	private BoxCollider _enemyCollider;
+
+	[SerializeField]
 	private Vector2 _direction;
 
 	// Use this for initialization
 	void Start () {
 		_enemyRB = gameObject.GetComponent<Rigidbody>();
+		_enemyCollider = gameObject.GetComponent<BoxCollider>();
 
 		_direction = new Vector2(1,0);
 	}
@@ -34,5 +38,9 @@ public class Ennemy : MonoBehaviour {
 	// Destroy an ennemy when it collides with a projectile
 	public void Destroy(){
 
+	}
+
+	void OnTriggerEnter(Collider other) {
+		Destroy(other.gameObject);
 	}
 }
