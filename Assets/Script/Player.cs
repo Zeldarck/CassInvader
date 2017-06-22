@@ -25,6 +25,9 @@ public class Player : MonoBehaviour {
     [SerializeField]
     GameObject m_shot;
 
+    [SerializeField]
+    Transform m_spawn;
+
     float m_time = 0;
 
 
@@ -43,7 +46,7 @@ public class Player : MonoBehaviour {
 
         if ((Input.GetButton("Fire1") || Input.GetKeyDown(KeyCode.Space)) && m_chargeur.value == m_chargeur.maxValue)
         {
-            Instantiate(m_shot, transform.position, transform.rotation);
+            Instantiate(m_shot, m_spawn.position, transform.rotation);
             m_chargeur.value = m_chargeur.minValue;
         }
 
