@@ -7,8 +7,8 @@ public class Projectile : MonoBehaviour {
     [SerializeField]
     float m_speed;
 
-    [SerializeField]
-    float m_acceleration;
+    //[SerializeField]
+  //  float m_acceleration;
 
     // Use this for initialization
     void Start () {
@@ -22,6 +22,6 @@ public class Projectile : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        GetComponent<Rigidbody>().velocity *=  m_acceleration;
+       // GetComponent<Rigidbody>().velocity *=  m_acceleration;
     }
 }
