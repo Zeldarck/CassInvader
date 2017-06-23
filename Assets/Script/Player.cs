@@ -50,6 +50,12 @@ public class Player : MonoBehaviour {
             m_chargeur.value = m_chargeur.minValue;
         }
 
+        GetComponent<Rigidbody>().position = new Vector3
+        (
+            Mathf.Clamp(GetComponent<Rigidbody>().position.x, boundary.xMin, boundary.xMax),
+            GetComponent<Rigidbody>().position.y, 0.0f
+        );
+
 
     }
 
@@ -60,12 +66,6 @@ public class Player : MonoBehaviour {
 
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
         GetComponent<Rigidbody>().velocity = movement * m_speed;
-        
-        GetComponent<Rigidbody>().position = new Vector3
-        (
-            Mathf.Clamp(GetComponent<Rigidbody>().position.x, boundary.xMin, boundary.xMax),
-            GetComponent<Rigidbody>().position.y, 0.0f
-        );
 
 
     }
