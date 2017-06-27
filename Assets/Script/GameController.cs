@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,14 @@ public class GameController : MonoBehaviour {
 	private GameObject _enemy1;
 
 
+    [SerializeField]
+    private Text _scoreText;
+
+    [SerializeField]
+    private int _score;
+
+
+
     void Start () {
 		if(INSTANCE != null && INSTANCE != this)
         {
@@ -37,7 +46,11 @@ public class GameController : MonoBehaviour {
 		_nbEnemyToSpawn = _nbEnemyPerLevel;
 
 		_lastLevelTime = Time.time;
-	}
+
+        UpdateDisplay();
+
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -53,5 +66,14 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+    public static void AddScore(int a_score)
+    {
+        INSTANCE._score += a_score;
+        INSTANCE.UpdateDisplay();
+    }
 
+    void UpdateDisplay()
+    {
+        _scoreText.text = "Score : " + _score;
+    }
 }

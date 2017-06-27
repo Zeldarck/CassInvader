@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour {
+public class Enemy : MonoBehaviour, ILife, IScore
+{
 
 	private static int _MIN_X = -12;
 	private static int _MAX_X = 12;
@@ -19,16 +22,49 @@ public class Enemy : MonoBehaviour {
 	private Vector2 _lastBorderPosition;
 
 
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    protected int m_life;
+
+    [SerializeField]
+    protected int m_score;
+
+
+    public UnityEvent OnDie;
+
+
+    // Use this for initialization
+    void Start () {
 		_enemyRB = gameObject.GetComponent<Rigidbody>();
 
 		gameObject.transform.position = new Vector3(_MIN_X , _MAX_Y , 0);
 		_lastBorderPosition = new Vector2(_MIN_X, _MAX_Y);
 		_direction = 1;
 		_descending = false;
-	}
+
+        m_life = 1;
+        OnDie.AddListener(() => StartCoroutine(AutoDestroy() ));
+    }
+
+    public bool GetDamage(int a_damage)
+    {
+        m_life -= a_damage;
+        if(m_life <= 0)
+        {
+            OnDie.Invoke();
+            return true;
+        }
+        return false;
+    }
+
 	
+    IEnumerator AutoDestroy()
+    {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        Destroy(gameObject);
+    }
+
+
 	// Update is called once per frame
 	void FixedUpdate () {
 		// check position and determine where to go next
@@ -77,4 +113,8 @@ public class Enemy : MonoBehaviour {
 
 	}
 
+    public int GetScore()
+    {
+        return 1;
+    }
 }

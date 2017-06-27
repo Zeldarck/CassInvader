@@ -28,6 +28,9 @@ public class Player : MonoBehaviour {
     [SerializeField]
     Transform m_spawn;
 
+    [SerializeField]
+    Text m_fireText;
+
     float m_time = 0;
 
 
@@ -55,6 +58,15 @@ public class Player : MonoBehaviour {
             Mathf.Clamp(GetComponent<Rigidbody>().position.x, boundary.xMin, boundary.xMax),
             GetComponent<Rigidbody>().position.y, 0.0f
         );
+
+        if(m_chargeur.value == m_chargeur.maxValue)
+        {
+            m_fireText.enabled = true;
+        }
+        else
+        {
+            m_fireText.enabled = false;
+        }
 
 
     }
