@@ -75,10 +75,13 @@ public class Player : MonoBehaviour {
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
 
-
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
-        GetComponent<Rigidbody>().velocity = movement * m_speed;
+        GetComponent<Rigidbody>().AddForce(movement * m_speed,ForceMode.Acceleration);
 
+        if(moveHorizontal == 0)
+        {
+            GetComponent<Rigidbody>().velocity = new Vector3(0.0f, 0.0f, 0.0f); ;
 
+        }
     }
 }

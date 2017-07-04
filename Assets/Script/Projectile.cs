@@ -45,7 +45,7 @@ public class Projectile : MonoBehaviour {
                 GameController.AddScore(score.GetScore());
             }
         }
-        GetComponent<Rigidbody>().velocity *= m_acceleration;
+       // GetComponent<Rigidbody>().velocity *= m_acceleration;
 
 
     }
