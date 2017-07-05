@@ -68,6 +68,15 @@ public class Player : MonoBehaviour {
             m_fireText.enabled = false;
         }
 
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            GetComponent<Rigidbody>().position += new Vector3(-1 * Time.deltaTime * m_speed, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            GetComponent<Rigidbody>().position += new Vector3( Time.deltaTime * m_speed, 0, 0);
+        
+        }
 
     }
 
@@ -75,8 +84,8 @@ public class Player : MonoBehaviour {
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
-        GetComponent<Rigidbody>().AddForce(movement * m_speed,ForceMode.Acceleration);
+        /*Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
+        GetComponent<Rigidbody>().AddForce(movement * m_speed,ForceMode.Acceleration);*/
 
         if(moveHorizontal == 0)
         {
