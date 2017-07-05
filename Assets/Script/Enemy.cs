@@ -100,18 +100,13 @@ public class Enemy : MonoBehaviour, ILife, IScore
 			directionToGo.x = _direction * _enemySpeed;
 		}
 
-		_enemyRB.velocity = directionToGo;
+		_enemyRB.position += directionToGo*Time.deltaTime;
 	}
 
 	public void SetDirection(float dir){
 		_direction = dir;
 	}
-
-
-	// Destroy an ennemy when it collides with a projectile
-	public void Destroy(){
-
-	}
+		
 
     public int GetScore()
     {
