@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour, ILife, IScore
 {
@@ -67,7 +68,16 @@ public class Enemy : MonoBehaviour, ILife, IScore
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		// check position and determine where to go next
+		//check if Y < 0.45 (0.9 = ennemy's height)
+		if(gameObject.transform.position.y < (_MIN_Y + 0.8)){
+			Debug.Log("An Enemy reached the bottom!");
+
+			GameController.EndGame();
+			Destroy(gameObject);
+		}
+
+
+
 		if (_descending) {
 			if (gameObject.transform.position.y <= (_lastBorderPosition.y - 1)) {
 				_lastBorderPosition.y -= 1;
@@ -78,13 +88,13 @@ public class Enemy : MonoBehaviour, ILife, IScore
 				_descending = false;
 			}
 		} else {
-			if(gameObject.transform.position.x >= _MAX_X && _direction >= 0 ){
+			if (gameObject.transform.position.x >= _MAX_X && _direction >= 0) {
 				Vector3 tmpPos = gameObject.transform.position;
 				tmpPos.x = _MAX_X;
 				gameObject.transform.position = tmpPos;
 				_descending = true;
 			}
-			if(gameObject.transform.position.x <= _MIN_X && _direction <= 0 ){
+			if (gameObject.transform.position.x <= _MIN_X && _direction <= 0) {
 				Vector3 tmpPos = gameObject.transform.position;
 				tmpPos.x = _MIN_X;
 				gameObject.transform.position = tmpPos;
@@ -93,14 +103,15 @@ public class Enemy : MonoBehaviour, ILife, IScore
 		}
 
 		// move accordingly
-		Vector3 directionToGo = new Vector3(0,0,0);
+		Vector3 directionToGo = new Vector3 (0, 0, 0);
 		if (_descending) {
 			directionToGo.y = -1 * _enemySpeed;
 		} else {
 			directionToGo.x = _direction * _enemySpeed;
 		}
 
-		_enemyRB.position += directionToGo*Time.deltaTime;
+		_enemyRB.position += directionToGo * Time.deltaTime;
+
 	}
 
 	public void SetDirection(float dir){

@@ -28,7 +28,12 @@ public class GameController : MonoBehaviour {
     [SerializeField]
     private int _score;
 
+	private static bool _gameIsOver;
 
+	[SerializeField]
+	private GameObject _gameOverMessage;
+	[SerializeField]
+	private Button _restartButton;
 
     void Start () {
 		if(INSTANCE != null && INSTANCE != this)
@@ -46,6 +51,9 @@ public class GameController : MonoBehaviour {
 		_nbEnemyToSpawn = _nbEnemyPerLevel;
 
 		_lastLevelTime = Time.time;
+		_gameIsOver = false;
+
+		_restartButton.onClick.AddListener(ReloadScene);
 
         UpdateDisplay();
 
@@ -64,6 +72,10 @@ public class GameController : MonoBehaviour {
 		if(Time.time >= (_lastLevelTime + _timeBetweenLevel)){
 			_nbEnemyToSpawn = _nbEnemyPerLevel;
 		}
+
+		if (_gameIsOver) {
+			DisplayGameOver ();
+		}
 	}
 
     public static void AddScore(int a_score)
@@ -76,4 +88,27 @@ public class GameController : MonoBehaviour {
     {
         _scoreText.text = "Score : " + _score;
     }
+
+	private void DisplayGameOver()
+	{
+		//freeze background
+		  //TODO
+		//display Game Over
+		_gameOverMessage.SetActive(true);
+	}
+
+	private void ReloadScene()
+	{
+		Debug.Log("You have restarted the game!");
+		_gameOverMessage.SetActive(false);
+		_gameIsOver = false;
+		//reload the scene
+		  //TODO
+		  //Application.LoadLevel(Application.loadedLevel);
+	}
+
+	public static void EndGame()
+	{
+		_gameIsOver = true;
+	}
 }
